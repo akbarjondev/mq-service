@@ -1,0 +1,39 @@
+/* plus-jakarta-sans-regular - latin */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("assets/fonts/plus-jakarta-sans-v2-latin-regular.woff2")
+      format("woff2"),
+    url("assets/fonts/plus-jakarta-sans-v2-latin-regular.woff") format("woff");
+}
+
+/* plus-jakarta-sans-500 - latin */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 500;
+  src: url("assets/fonts/plus-jakarta-sans-v2-latin-500.woff2") format("woff2"),
+    url("assets/fonts/plus-jakarta-sans-v2-latin-500.woff") format("woff");
+}
+
+/* plus-jakarta-sans-700 - latin */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 700;
+  src: url("assets/fonts/plus-jakarta-sans-v2-latin-700.woff2") format("woff2"),
+    url("assets/fonts/plus-jakarta-sans-v2-latin-700.woff") format("woff");
+}
+
+body {
+  bottom: 0;
+  margin: 0;
+  font-family: "Plus Jakarta Sans", "Arial", sans-serif;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
