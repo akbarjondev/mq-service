@@ -1,0 +1,25 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app__body {
+  display: flex;
+  height: 100%;
+  border-top: 1px solid var(--border-color);
+}
+
+.app__sidebar,
+.app__main {
+  height: 100%;
+}
+
+.app__sidebar {
+  width: 20%;
+  border-right: 1px solid var(--border-color);
+}
+
+.app__main {
+  width: 80%;
+}

@@ -1,0 +1,26 @@
+.sidebar__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--main-gray);
+  font-size: 14px;
+  padding: 20px 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar__img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin-right: 10px;
+}
+
+.sidebar__link:hover {
+  background-color: var(--hover-color);
+}
