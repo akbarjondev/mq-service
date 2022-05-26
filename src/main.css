@@ -33,8 +33,10 @@
   --main-yellow: #dc8742;
   --main-green: #67c24d;
   --main-red: #e23a2d;
+  --main-white: #ffffff;
   --border-color: rgba(21, 21, 21, 0.1);
   --hover-color: #e9ecef;
+  --border-radius: 4px;
 }
 
 body {
@@ -47,4 +49,57 @@ body {
 *::after,
 *::before {
   box-sizing: border-box;
+}
+
+.btn {
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  color: var(--main-black);
+  font-size: 14px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-blue {
+  background-color: var(--main-blue);
+  color: var(--main-white);
+}
+
+.btn-blue:hover {
+  box-shadow: 0 0 0px 5px rgba(75, 130, 236, 0.3);
+}
+
+.btn-green {
+  background-color: var(--main-green);
+  color: var(--main-white);
+}
+
+.btn-green:hover {
+  box-shadow: 0 0 0px 5px rgba(103, 194, 77, 0.3);
+}
+
+.btn-red {
+  background-color: var(--main-red);
+  color: var(--main-white);
+}
+
+.btn-red:hover {
+  box-shadow: 0 0 0px 5px rgba(226, 58, 45, 0.3);
+}
+
+.input {
+  padding: 8px;
+  margin: 8px 0;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.input:focus {
+  box-shadow: 0 0 0px 5px rgba(75, 130, 236, 0.3);
+}
+
+.label {
+  font-size: 14px;
 }
