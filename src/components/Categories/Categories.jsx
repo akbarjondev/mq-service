@@ -151,46 +151,53 @@ const Categories = () => {
       >
         <h3 className={style.modal__heading}>Edit category</h3>
 
-        <div className={style.modal__body}>
-          <input
-            className={style.categories__input + " input"}
-            placeholder="Type here..."
-            type="text"
-            value={modalData.name}
-            onChange={(event) =>
-              setModalData({
-                ...modalData,
-                name: event.target.value,
-              })
-            }
-          />
-        </div>
+        <form
+          className={style.modal__form}
+          onSubmit={(event) => {
+            event.preventDefault();
 
-        <div className={style.modal__btnwrapper}>
-          <button
-            className={style.modal__btn + " btn btn-green"}
-            onClick={() => {
-              editCatMutation.mutate({
-                id: modalData.id,
-                name: modalData.name,
-              });
-              setLoader(true);
-            }}
-          >
-            Save
-          </button>
-          <button
-            className={style.modal__btn + " btn btn-red"}
-            onClick={() =>
-              setModalData({
-                ...modalData,
-                open: false,
-              })
-            }
-          >
-            Close
-          </button>
-        </div>
+            editCatMutation.mutate({
+              id: modalData.id,
+              name: modalData.name,
+            });
+            setLoader(true);
+          }}
+        >
+          <div className={style.modal__body}>
+            <input
+              className={style.categories__input + " input"}
+              placeholder="Type here..."
+              type="text"
+              value={modalData.name}
+              onChange={(event) =>
+                setModalData({
+                  ...modalData,
+                  name: event.target.value,
+                })
+              }
+            />
+          </div>
+
+          <div className={style.modal__btnwrapper}>
+            <button
+              className={style.modal__btn + " btn btn-green"}
+              type="submit"
+            >
+              Save
+            </button>
+            <button
+              className={style.modal__btn + " btn btn-red"}
+              onClick={() =>
+                setModalData({
+                  ...modalData,
+                  open: false,
+                })
+              }
+            >
+              Close
+            </button>
+          </div>
+        </form>
       </Modal>
     </div>
   );
