@@ -7,14 +7,28 @@
   flex-direction: column;
 }
 
+.categories__input {
+  display: flex;
+  width: 100%;
+}
+
 .categories {
   margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
+  list-style-type: none;
 }
 
 .category {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px;
+}
+
+.category__controls button:first-child {
+  margin-right: 12px;
 }
 
 .category:nth-child(odd) {
@@ -25,4 +39,18 @@
   display: flex;
   align-items: center;
   min-height: 24px;
+}
+
+.modal__heading {
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+.modal__body {
+  width: 100%;
+  flex-grow: 1;
+}
+
+.modal__btn {
+  margin-right: 12px;
 }

@@ -30,7 +30,7 @@
   --main-black: #151515;
   --main-blue: #4b82ec;
   --main-gray: #868e96;
-  --main-yellow: #dc8742;
+  --main-yellow: #ff922b;
   --main-green: #67c24d;
   --main-red: #e23a2d;
   --main-white: #ffffff;
@@ -69,6 +69,15 @@ body {
 
 .btn-blue:hover {
   box-shadow: 0 0 0px 5px rgba(75, 130, 236, 0.3);
+}
+
+.btn-yellow {
+  background-color: var(--main-yellow);
+  color: var(--main-white);
+}
+
+.btn-yellow:hover {
+  box-shadow: 0 0 0px 5px rgba(220, 135, 66, 0.3);
 }
 
 .btn-green {
