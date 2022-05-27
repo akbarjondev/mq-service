@@ -25,9 +25,9 @@ const Categories = () => {
   );
 
   let createCatMutation = useMutationAxios(
-    (catName) => {
+    ({ name }) => {
       return axios.post(`${import.meta.env.VITE_MAIN_URL}/categories`, {
-        name: catName,
+        name,
       });
     },
     () => {
@@ -54,13 +54,25 @@ const Categories = () => {
     }
   );
 
+  const deleteCatMutation = useMutationAxios(
+    ({ id }) => {
+      return axios.delete(`${import.meta.env.VITE_MAIN_URL}/categories`, {
+        data: { id },
+      });
+    },
+    () => {
+      refetch();
+      setLoader(false);
+    }
+  );
+
   return (
     <div className={style.categories__wrapper}>
       <form
         className={style.categories__form}
         onSubmit={(event) => {
           event.preventDefault();
-          createCatMutation.mutate(categoryName);
+          createCatMutation.mutate({ name: categoryName });
           setLoader(true);
         }}
       >
@@ -103,7 +115,15 @@ const Categories = () => {
                     >
                       Edit
                     </button>
-                    <button className="btn btn-red">Delete</button>
+                    <button
+                      className="btn btn-red"
+                      onClick={() => {
+                        deleteCatMutation.mutate({ id: category_id });
+                        setLoader(true);
+                      }}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </li>
               );
