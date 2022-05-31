@@ -1,11 +1,11 @@
 import Editor from "@uiw/react-textarea-code-editor";
 import style from "./CodeEditor.module.css";
 
-const CodeEditor = ({ code, ...params }) => {
+const CodeEditor = ({ code, ...props }) => {
   return (
     <div className={style.editor}>
       <Editor
-        {...params}
+        {...props}
         value={code}
         language="js"
         placeholder="Please enter JS code."

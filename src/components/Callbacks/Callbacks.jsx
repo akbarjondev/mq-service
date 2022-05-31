@@ -5,12 +5,25 @@ import Modal from "../Modal/Modal";
 import style from "./Callbacks.module.css";
 import { callbackTypes } from "./../../config/config";
 import CodeEditor from "./../CodeEditor/CodeEditor";
+import { useMutationAxios } from "../../hooks/useMutationRequest";
+import Loader from "../Loader/Loader";
 
 const Callbacks = () => {
+  const [loader, setLoader] = useState(false);
+
   const [modalData, setModalData] = useState({
     open: false,
     type: "create",
-    data: {},
+  });
+
+  const [callbackFormData, setCallbackFormData] = useState({
+    title: "",
+    url: "",
+    type: "",
+    active: false,
+    category: 0,
+    function1: "",
+    function2: "",
   });
 
   // get callbakcs
@@ -34,6 +47,29 @@ const Callbacks = () => {
     return null;
   }, [isSuccess, categories]);
 
+  let createCallbackMutation = useMutationAxios(
+    ({ title, url, type, active, category, function1, function2 }) => {
+      console.log({ title, url, type, active, category, function1, function2 });
+      return axios.post(`${import.meta.env.VITE_MAIN_URL}/callbacks`, {
+        callback_title: title,
+        callback_url: url,
+        callback_type: type,
+        category_id: category,
+        callback_active: active == "true" ? true : false,
+        callback_function1: JSON.stringify(function1),
+        callback_function2: JSON.stringify(function2),
+      });
+    },
+    () => {
+      refetch();
+      setLoader(false);
+      setModalData({
+        ...modalData,
+        open: false,
+      });
+    }
+  );
+
   const callbacksJSX = (arrOfCallbacks) => {
     return (
       <>
@@ -47,27 +83,22 @@ const Callbacks = () => {
           } = callback;
 
           return (
-            <li className={style.callback} key={callback_id}>
-              <div className={style.callback__text}>
-                <div className={style.callback__index}>{index + 1}.&nbsp;</div>
-                <div className={style.callback__title}>{callback_title}</div>
-                <div
-                  className={style.callback__category}
-                  data-catid={category_id}
-                >
-                  {category_name}
-                </div>
-                <div
-                  className={
-                    callback_active
-                      ? style["callback__active--on"]
-                      : style.callback__active
-                  }
-                >
-                  <span className="visually-hidden">callback status</span>
-                </div>
-              </div>
-              <div className={style.callback__controls}>
+            <tr className={style.callback} key={callback_id}>
+              <td className={style.callback__index}>{index + 1}.&nbsp;</td>
+              <td className={style.callback__title}>{callback_title}</td>
+              <td className={style.callback__category} data-catid={category_id}>
+                {category_name}
+              </td>
+              <td
+                className={`${style.callback__active} ${
+                  callback_active
+                    ? style["callback__active--on"]
+                    : style["callback__active--off"]
+                }`}
+              >
+                <span className="visually-hidden">callback status</span>
+              </td>
+              <td className={style.callback__controls}>
                 <button
                   className="btn btn-yellow"
                   // onClick={
@@ -90,8 +121,8 @@ const Callbacks = () => {
                 >
                   Delete
                 </button>
-              </div>
-            </li>
+              </td>
+            </tr>
           );
         })}
       </>
@@ -102,7 +133,9 @@ const Callbacks = () => {
     <>
       <div className={style.callbacks}>
         <div className={style.callbacks__top}>
-          <h2 className={style.callbacks__heading}>Callbacks</h2>
+          <h2 className={style.callbacks__heading}>
+            Callbacks {loader && <Loader />}
+          </h2>
           <button
             className="btn btn-blue"
             onClick={() => setModalData({ ...modalData, open: true })}
@@ -110,25 +143,12 @@ const Callbacks = () => {
             + Create
           </button>
         </div>
-        <div className={style.callback__header}>
-          <div className={`${style.callback__head1} ${style.callback__head}`}>
-            Callback title
-          </div>
-          <div className={`${style.callback__head2} ${style.callback__head}`}>
-            Category
-          </div>
-          <div className={`${style.callback__head3} ${style.callback__head}`}>
-            Status
-          </div>
-          <div className={`${style.callback__head4} ${style.callback__head}`}>
-            Control
-          </div>
-        </div>
-        <ol className={style.callbacks__list}>
+
+        <table className={style.callbacks__list}>
           {isLoading && <div>Wait a second...</div>}
           {error && <div>{error}</div>}
           {callbacks && callbacksJSX(callbacks.data.data)}
-        </ol>
+        </table>
       </div>
       <Modal
         modalData={modalData}
@@ -152,7 +172,14 @@ const Callbacks = () => {
           <h3 className={style.modal__heading}>
             {modalData.type === "create" ? "Create" : "Edit"}
           </h3>
-          <form className={style.modal__form}>
+          <form
+            className={style.modal__form}
+            onSubmit={(event) => {
+              event.prevendivefault();
+
+              createCallbackMutation.mutate(callbackFormData);
+            }}
+          >
             <div className={style.form__control}>
               <label className="label" htmlFor="title">
                 Callback title
@@ -161,6 +188,13 @@ const Callbacks = () => {
                 className={`${style.form__input} input`}
                 id="title"
                 required
+                type="text"
+                onChange={(event) =>
+                  setCallbackFormData({
+                    ...callbackFormData,
+                    title: event.target.value,
+                  })
+                }
               />
             </div>
 
@@ -172,6 +206,13 @@ const Callbacks = () => {
                 className={`${style.form__input} input`}
                 id="url"
                 required
+                type="text"
+                onChange={(event) =>
+                  setCallbackFormData({
+                    ...callbackFormData,
+                    url: event.target.value,
+                  })
+                }
               />
             </div>
 
@@ -184,8 +225,14 @@ const Callbacks = () => {
                   className={`${style.form__input} input`}
                   id="type"
                   required
-                  type="text"
+                  onChange={(event) => {
+                    setCallbackFormData({
+                      ...callbackFormData,
+                      type: event.target.value,
+                    });
+                  }}
                 >
+                  <option defaultValue="">Select type</option>
                   {callbackTypes.map(({ id, name }) => (
                     <option value={name} key={id}>
                       {name}
@@ -202,8 +249,14 @@ const Callbacks = () => {
                   className={`${style.form__input} input`}
                   id="status"
                   required
-                  type="text"
+                  onChange={(event) => {
+                    setCallbackFormData({
+                      ...callbackFormData,
+                      active: event.target.value,
+                    });
+                  }}
                 >
+                  <option defaultValue="">Select status</option>
                   <option value={true}>Active</option>
                   <option value={false}>Passive</option>
                 </select>
@@ -217,11 +270,18 @@ const Callbacks = () => {
                   className={`${style.form__input} input`}
                   id="category"
                   required
+                  onChange={(event) => {
+                    setCallbackFormData({
+                      ...callbackFormData,
+                      category: event.target.value,
+                    });
+                  }}
                 >
+                  <option defaultValue="">Select category</option>
                   {cachedCategories &&
                     cachedCategories.map(
                       ({ category_id: id, category_name: name }) => (
-                        <option value={name} key={id}>
+                        <option value={id} key={id}>
                           {name}
                         </option>
                       )
@@ -237,7 +297,12 @@ const Callbacks = () => {
                 </label>
                 <CodeEditor
                   id="function1"
-                  onChange={(event) => console.log(event)}
+                  onChange={(event) => {
+                    setCallbackFormData({
+                      ...callbackFormData,
+                      function1: event.target.value,
+                    });
+                  }}
                 />
               </div>
               <div className={style.form__control}>
@@ -246,7 +311,12 @@ const Callbacks = () => {
                 </label>
                 <CodeEditor
                   id="function2"
-                  onChange={(event) => console.log(event)}
+                  onChange={(event) => {
+                    setCallbackFormData({
+                      ...callbackFormData,
+                      function2: event.target.value,
+                    });
+                  }}
                 />
               </div>
             </div>
