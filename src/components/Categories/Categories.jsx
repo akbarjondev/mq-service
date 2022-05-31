@@ -66,6 +66,43 @@ const Categories = () => {
     }
   );
 
+  const categoriesJSX = (arrOfCategories) => {
+    return (
+      <>
+        {arrOfCategories.map(({ category_id, category_name }, index) => {
+          return (
+            <li className={style.category} key={category_id}>
+              {index + 1}. {category_name}
+              <div className={style.category__controls}>
+                <button
+                  className="btn btn-yellow"
+                  onClick={() =>
+                    setModalData({
+                      id: category_id,
+                      name: category_name,
+                      open: true,
+                    })
+                  }
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-red"
+                  onClick={() => {
+                    deleteCatMutation.mutate({ id: category_id });
+                    setLoader(true);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          );
+        })}
+      </>
+    );
+  };
+
   return (
     <div className={style.categories__wrapper}>
       <form
@@ -96,39 +133,7 @@ const Categories = () => {
       <ol className={style.categories}>
         {isLoading && <div>Wait a second...</div>}
         {error && <div>{error}</div>}
-        {categoriesReponse &&
-          categoriesReponse.data.data.map(
-            ({ category_id, category_name }, index) => {
-              return (
-                <li className={style.category} key={category_id}>
-                  {index + 1}. {category_name}
-                  <div className={style.category__controls}>
-                    <button
-                      className="btn btn-yellow"
-                      onClick={() =>
-                        setModalData({
-                          id: category_id,
-                          name: category_name,
-                          open: true,
-                        })
-                      }
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-red"
-                      onClick={() => {
-                        deleteCatMutation.mutate({ id: category_id });
-                        setLoader(true);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </li>
-              );
-            }
-          )}
+        {categoriesReponse && categoriesJSX(categoriesReponse.data.data)}
       </ol>
       <Modal
         className={style.modal}
