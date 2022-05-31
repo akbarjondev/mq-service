@@ -84,6 +84,18 @@ const Callbacks = () => {
     }
   );
 
+  const deleteCatMutation = useMutationAxios(
+    ({ id }) => {
+      return axios.delete(`${import.meta.env.VITE_MAIN_URL}/callbacks`, {
+        data: { id },
+      });
+    },
+    () => {
+      refetch();
+      setLoader(false);
+    }
+  );
+
   const callbacksJSX = (arrOfCallbacks) => {
     return (
       <>
@@ -143,8 +155,8 @@ const Callbacks = () => {
                 <button
                   className="btn btn-red"
                   onClick={() => {
-                    // deleteCatMutation.mutate({ id: category_id });
-                    // setLoader(true);
+                    deleteCatMutation.mutate({ id: callback_id });
+                    setLoader(true);
                   }}
                 >
                   Delete
