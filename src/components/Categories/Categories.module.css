@@ -58,6 +58,11 @@
   height: 100%;
 }
 
-.modal__btn {
+.modal__btnwrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal__btn:first-child {
   margin-right: 12px;
 }
